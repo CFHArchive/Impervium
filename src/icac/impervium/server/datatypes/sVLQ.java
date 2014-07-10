@@ -7,6 +7,18 @@ public class sVLQ implements DataType {
 	public sVLQ(byte[] bytes)
 	{	
 		this.bytes = bytes;
+		decode(bytes);
+	    // To get the byte length of the real number we have to re-encode,
+	    // because sometimes we do not know when the VLQ ends.
+		encode(value);
+	}
+	public sVLQ(long value)
+	{
+		this.value = value;
+		encode(value);
+	}
+	private void decode(byte[] bytes)
+	{
 		long value = 0;
 	    for (int i = 0; i < bytes.length; i++)
 	    {
@@ -18,12 +30,9 @@ public class sVLQ implements DataType {
 	    value = (value + 1)/2;
 	    this.value = value;
 	}
-	public sVLQ(long value)
+	private void encode(long value)
 	{
-		this.value = value;
-
 		value = value * 2 - 1;
-		
 		int numRelevantBits = 64 - Long.numberOfLeadingZeros(value);
 	    int numBytes = (numRelevantBits + 6) / 7;
 	    if (numBytes == 0)
@@ -36,8 +45,7 @@ public class sVLQ implements DataType {
 	        curByte |= 0x80;
 	      bytes[i] = (byte)curByte;
 	      value >>>= 7;
-	    }
-	    
+	    }    
 	    this.bytes = bytes;
 	}
 	
