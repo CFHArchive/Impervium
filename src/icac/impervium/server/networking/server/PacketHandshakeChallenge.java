@@ -5,13 +5,13 @@ import java.io.DataOutputStream;
 
 import icac.impervium.server.networking.Packet;
 
-public class HandshakeChallengePacket extends Packet {
+public class PacketHandshakeChallenge extends Packet {
 
 	private String claim;
 	private String salt;
 	private int rounds;
 	
-	public HandshakeChallengePacket(String claim, int rounds) {
+	public PacketHandshakeChallenge(String claim, int rounds) {
 		this.claim = claim;
 		//TODO: Base64 Encoder to encode salt
 		this.rounds = rounds;
