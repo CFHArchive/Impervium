@@ -5,18 +5,21 @@ import java.io.DataOutputStream;
 
 import icac.impervium.server.networking.Packet;
 
-public class PacketProtocolVersion extends Packet {
+public class HandshakeChallengePacket extends Packet {
+
+	private String claim;
+	private String salt;
+	private int rounds;
 	
-	private int protocolVersion;
-	
-	public PacketProtocolVersion(int protocolVersion) {
-		this.protocolVersion = protocolVersion;
+	public HandshakeChallengePacket(String claim, int rounds) {
+		this.claim = claim;
+		//TODO: Base64 Encoder to encode salt
+		this.rounds = rounds;
 	}
-	
 	
 	@Override
 	public Integer getID() {
-		return 0;
+		return 3;
 	}
 
 	@Override
@@ -28,5 +31,4 @@ public class PacketProtocolVersion extends Packet {
 	public void read(DataInputStream dis) throws Exception {
 		//Server->Client Packet
 	}
-
 }
