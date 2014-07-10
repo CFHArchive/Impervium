@@ -1,11 +1,14 @@
 package icac.impervium.server.datatypes;
 
+import icac.impervium.server.datatypes.exception.VLQNegativeException;
+
 public class VLQ implements DataType {
 	private long value;
 	private byte[] bytes;
 	
 	public VLQ(byte[] bytes)
 	{
+	    this.bytes = bytes;
 		long value = 0;
 	    for (int i = 0; i < bytes.length; i++)
 	    {
@@ -14,11 +17,12 @@ public class VLQ implements DataType {
 	      if ((curByte & 0x80) == 0)
 	        break;
 	    }
-	    this.bytes = bytes;
 	    this.value = value;
 	}
-	public VLQ(long value)
+	public VLQ(long value) throws VLQNegativeException
 	{
+		this.value = value;
+		if (value<0) throw new VLQNegativeException();
 		int numRelevantBits = 64 - Long.numberOfLeadingZeros(value);
 	    int numBytes = (numRelevantBits + 6) / 7;
 	    if (numBytes == 0)
@@ -33,7 +37,6 @@ public class VLQ implements DataType {
 	      value >>>= 7;
 	    }
 	    this.bytes = bytes;
-		this.value = value;
 	}
 	
 	public long getLong()
@@ -42,5 +45,15 @@ public class VLQ implements DataType {
 	}
 	public byte[] getBytes() {
 		return bytes;
+	}
+	public void printBinary()
+	{
+		String s = "";
+		for (byte b : bytes)
+		{
+			s+=Integer.toBinaryString(b & 0xFF);
+		}
+		System.out.println("Bytes: " + s);
+		System.out.println("Long: " + getLong());
 	}
 }

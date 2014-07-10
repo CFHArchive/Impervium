@@ -6,8 +6,8 @@ public class sVLQ implements DataType {
 	
 	public sVLQ(byte[] bytes)
 	{	
+		this.bytes = bytes;
 		long value = 0;
-		
 	    for (int i = 0; i < bytes.length; i++)
 	    {
 	      int curByte = bytes[i] & 0xFF;
@@ -15,15 +15,13 @@ public class sVLQ implements DataType {
 	      if ((curByte & 0x80) == 0)
 	        break;
 	    }
-	    
 	    value = (value + 1)/2;
-	    
-	    this.bytes = bytes;
 	    this.value = value;
 	}
 	public sVLQ(long value)
 	{
-		// signed algorithm is *2-1
+		this.value = value;
+
 		value = value * 2 - 1;
 		
 		int numRelevantBits = 64 - Long.numberOfLeadingZeros(value);
@@ -41,7 +39,6 @@ public class sVLQ implements DataType {
 	    }
 	    
 	    this.bytes = bytes;
-		this.value = value;
 	}
 	
 	public long getLong()
@@ -50,5 +47,15 @@ public class sVLQ implements DataType {
 	}
 	public byte[] getBytes() {
 		return bytes;
+	}
+	public void printBinary()
+	{
+		String s = "";
+		for (byte b : bytes)
+		{
+			s+=Integer.toBinaryString(b & 0xFF);
+		}
+		System.out.println("Bytes: " + s);
+		System.out.println("Long: " + getLong());
 	}
 }
