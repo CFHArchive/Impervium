@@ -6,22 +6,21 @@ public class VLQ implements DataType {
 	private long value;
 	private byte[] bytes;
 	
-	public VLQ(byte[] bytes)
+	public VLQ(byte[] bytes) throws VLQNegativeException
 	{
 	    this.bytes = bytes;
-		long value = 0;
-	    for (int i = 0; i < bytes.length; i++)
-	    {
-	      int curByte = bytes[i] & 0xFF;
-	      value = (value << 7) | (curByte & 0x7F);
-	      if ((curByte & 0x80) == 0)
-	        break;
-	    }
-	    this.value = value;
+	    decode(bytes);
+	    // To get the byte length of the real number we have to re-encode,
+	    // because sometimes we do not know when the VLQ ends.
+	    encode(value);
 	}
 	public VLQ(long value) throws VLQNegativeException
 	{
 		this.value = value;
+		encode(value);
+	}
+	private void encode(long value) throws VLQNegativeException
+	{
 		if (value<0) throw new VLQNegativeException();
 		int numRelevantBits = 64 - Long.numberOfLeadingZeros(value);
 	    int numBytes = (numRelevantBits + 6) / 7;
@@ -37,6 +36,18 @@ public class VLQ implements DataType {
 	      value >>>= 7;
 	    }
 	    this.bytes = bytes;
+	}
+	private void decode(byte[] bytes)
+	{
+		long value = 0;
+	    for (int i = 0; i < bytes.length; i++)
+	    {
+	      int curByte = bytes[i] & 0xFF;
+	      value = (value << 7) | (curByte & 0x7F);
+	      if ((curByte & 0x80) == 0)
+	        break;
+	    }
+	    this.value = value;
 	}
 	
 	public long getLong()
@@ -55,5 +66,8 @@ public class VLQ implements DataType {
 		}
 		System.out.println("Bytes: " + s);
 		System.out.println("Long: " + getLong());
+	}public int getNumBytes()
+	{
+		return bytes.length;
 	}
 }
