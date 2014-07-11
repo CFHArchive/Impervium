@@ -29,7 +29,7 @@ public class Variant implements DataType {
 			type = 1;
 			return;
 		}
-		if (value instanceof Double)       encodeDouble();
+		if (value instanceof Dubble)       encodeDouble();
 		if (value instanceof Bool)         encodeBool();
 		if (value instanceof VLQ)          encodeVLQ();
 		if (value instanceof VLQString)    encodeVLQString();
@@ -38,7 +38,7 @@ public class Variant implements DataType {
 	}
 	private void encodeDouble()
 	{
-		dataBytes = ByteBuffer.allocate(8).putDouble((double)value).array();
+		dataBytes = ByteBuffer.allocate(8).putDouble(((Dubble)value).getValue()).array();
 		finishEncode();
 	}
 	private void encodeBool()
@@ -114,7 +114,7 @@ public class Variant implements DataType {
 	private void decodeDouble()
 	{
 		Double doub = ByteBuffer.wrap(dataBytes).getDouble();
-		value = (Object) doub;
+		value = (Object) new Dubble(doub);
 	}
 	private void decodeBool()
 	{
