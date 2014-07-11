@@ -1,6 +1,11 @@
 package icac.impervium.server.networking.server;
 
+import icac.impervium.server.datatypes.Bool;
+import icac.impervium.server.datatypes.UInt64;
+import icac.impervium.server.datatypes.UInt8;
 import icac.impervium.server.datatypes.VLQ;
+import icac.impervium.server.datatypes.VLQString;
+import icac.impervium.server.datatypes.exception.VLQNegativeException;
 import icac.impervium.server.networking.Packet;
 
 import java.io.DataInputStream;
@@ -8,10 +13,10 @@ import java.io.DataOutputStream;
 
 public class PacketConnectionResponse extends Packet {
 
-	private boolean success;
+	private Bool success;
 	private VLQ clientID;
 	private String rejectionReason;
-	private boolean celestialInfo;
+	private Bool celestialInfo;
 	private int orbitalLevels;
 	private int chunkSize;
 	private int xyMin;
@@ -21,24 +26,43 @@ public class PacketConnectionResponse extends Packet {
 	private VLQ sectorsNumber;
 	private String sectorID;
 	private String sectorName;
-	private long sectorSeed;
+	private UInt64 sectorSeed;
 	private String sectorPrefix;
 	//TODO: Variant DataType
 	
-	public PacketConnectionResponse(boolean success, VLQ clientID, boolean celestrialInfo) {
-		this.success = success;
-		this.clientID = clientID;
-		this.celestialInfo = celestrialInfo;
+	public PacketConnectionResponse(boolean success, long clientID, boolean celestrialInfo) {
+		this.success = new Bool(success);
+		try {
+			this.clientID = new VLQ(clientID);
+		} catch (VLQNegativeException e) {
+			e.printStackTrace();
+		}
+		this.celestialInfo = new Bool(celestrialInfo);
 	}
 	
 	@Override
-	public Integer getID() {
-		return 1;
+	public UInt8 getID() {
+		return new UInt8((byte)1);
 	}
 
 	@Override
 	public void write(DataOutputStream dos) throws Exception {
-		//TODO: Write packet to stream.
+		dos.write(this.success.getBytes());
+		dos.write(this.clientID.getBytes());
+		dos.write(new VLQString(this.rejectionReason).getBytes());
+		dos.write(this.celestialInfo.getBytes());
+		dos.writeInt(this.orbitalLevels);
+		dos.writeInt(this.chunkSize);
+		dos.writeInt(this.xyMin);
+		dos.writeInt(this.xyMax);
+		dos.writeInt(this.zMin);
+		dos.writeInt(this.zMax);
+		dos.write(this.sectorsNumber.getBytes());
+		dos.write(new VLQString(this.sectorID).getBytes());
+		dos.write(new VLQString(this.sectorName).getBytes());
+		dos.write(this.sectorSeed.getBytes());
+		dos.write(new VLQString(this.sectorPrefix).getBytes());
+		//TODO: write variants
 	}
 
 	@Override
@@ -50,7 +74,7 @@ public class PacketConnectionResponse extends Packet {
 	 * @param success the success to set
 	 */
 	public void setSuccess(boolean success) {
-		this.success = success;
+		this.success = new Bool(success);
 	}
 
 	/**
@@ -71,7 +95,7 @@ public class PacketConnectionResponse extends Packet {
 	 * @param celestialInfo the celestialInfo to set
 	 */
 	public void setCelestialInfo(boolean celestialInfo) {
-		this.celestialInfo = celestialInfo;
+		this.celestialInfo = new Bool(celestialInfo);
 	}
 
 	/**
@@ -141,7 +165,7 @@ public class PacketConnectionResponse extends Packet {
 	 * @param sectorSeed the sectorSeed to set
 	 */
 	public void setSectorSeed(long sectorSeed) {
-		this.sectorSeed = sectorSeed;
+		this.sectorSeed = new UInt64(sectorSeed);
 	}
 
 	/**

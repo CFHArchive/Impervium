@@ -1,9 +1,12 @@
 package icac.impervium.server.networking.server;
 
+import icac.impervium.server.Utils;
+import icac.impervium.server.datatypes.UInt8;
+import icac.impervium.server.datatypes.VLQString;
+import icac.impervium.server.networking.Packet;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-
-import icac.impervium.server.networking.Packet;
 
 public class PacketHandshakeChallenge extends Packet {
 
@@ -13,18 +16,20 @@ public class PacketHandshakeChallenge extends Packet {
 	
 	public PacketHandshakeChallenge(String claim, int rounds) {
 		this.claim = claim;
-		//TODO: Base64 Encoder to encode salt
+		this.salt = Utils.generateSalt();
 		this.rounds = rounds;
 	}
 	
 	@Override
-	public Integer getID() {
-		return 3;
+	public UInt8 getID() {
+		return new UInt8((byte)3);
 	}
 
 	@Override
 	public void write(DataOutputStream dos) throws Exception {
-		//TODO: Write packet to stream.
+		dos.write(new VLQString(this.claim).getBytes());
+		dos.write(new VLQString(this.salt).getBytes());
+		dos.writeInt(this.rounds);
 	}
 
 	@Override

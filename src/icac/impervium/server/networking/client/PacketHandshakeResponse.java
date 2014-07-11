@@ -1,5 +1,6 @@
 package icac.impervium.server.networking.client;
 
+import icac.impervium.server.datatypes.UInt8;
 import icac.impervium.server.networking.Packet;
 
 import java.io.DataInputStream;
@@ -11,8 +12,8 @@ public class PacketHandshakeResponse extends Packet {
 	private String passwordHash;
 	
 	@Override
-	public Integer getID() {
-		return 9;
+	public UInt8 getID() {
+		return new UInt8((byte)9);
 	}
 
 	@Override

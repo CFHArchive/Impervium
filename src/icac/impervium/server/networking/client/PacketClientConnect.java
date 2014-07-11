@@ -3,6 +3,7 @@ package icac.impervium.server.networking.client;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
+import icac.impervium.server.datatypes.UInt8;
 import icac.impervium.server.networking.Packet;
 
 public class PacketClientConnect extends Packet {
@@ -21,8 +22,8 @@ public class PacketClientConnect extends Packet {
 	}
 	
 	@Override
-	public Integer getID() {
-		return 7;
+	public UInt8 getID() {
+		return new UInt8((byte)7);
 	}
 
 	@Override
