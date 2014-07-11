@@ -1,11 +1,14 @@
 package icac.impervium.server.datatypes;
 
-public class UInt64 implements DataType {
+import icac.impervium.server.datatypes.exception.InvalidUIntException;
 
-	@Override
-	public byte[] getBytes() {
-		// TODO Auto-generated method stub
-		return null;
+public class UInt64 extends UIntXX {
+	public UInt64(byte[] bytes) throws InvalidUIntException
+	{
+		super(bytes, 8);
 	}
-	
+	public UInt64(long value)
+	{
+		super(value, 8);
+	}
 }

@@ -1,11 +1,14 @@
 package icac.impervium.server.datatypes;
 
-public class UInt8 implements DataType {
+import icac.impervium.server.datatypes.exception.InvalidUIntException;
 
-	@Override
-	public byte[] getBytes() {
-		// TODO Auto-generated method stub
-		return null;
+public class UInt8 extends UIntXX {
+	public UInt8(byte[] bytes) throws InvalidUIntException
+	{
+		super(bytes, 1);
 	}
-	
+	public UInt8(byte value)
+	{
+		super(value, 1);
+	}
 }
