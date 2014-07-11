@@ -22,11 +22,7 @@ public class Server {
 		
 		try {
 			connection = new ServerSocket(port);
-    		new Thread() {
-				public void run() {
-					connect();
-				}
-			}.start();
+    		new Thread(() -> connect()).start();
     	} catch(Exception e) {
     		System.out.println(e.getStackTrace());
     	}
