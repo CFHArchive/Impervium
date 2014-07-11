@@ -43,7 +43,7 @@ public class Variant implements DataType {
 	}
 	private void encodeBool()
 	{
-		dataBytes = new byte[]{((boolean) value) ? (byte)1 : (byte)0};
+		dataBytes = new byte[]{((Bool) value).getValue() ? (byte)1 : (byte)0};
 		finishEncode();
 	}
 	private void encodeVLQ()
