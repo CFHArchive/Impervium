@@ -1,6 +1,5 @@
 package icac.impervium.server.networking;
 
-import icac.impervium.server.Utils;
 import icac.impervium.server.datatypes.Bool;
 import icac.impervium.server.datatypes.Dubble;
 import icac.impervium.server.datatypes.UInt16;
@@ -93,6 +92,10 @@ public class PacketPayload {
 	}
 	
 	public byte[] getBytes() {
-		return Utils.getPrimitiveArray((Byte[])this.payload.toArray());
+		byte[] toReturn = new byte[this.payload.size()];
+		for(int i = 0; i < this.payload.size(); i++) {
+			toReturn[i] = this.payload.get(i);
+		}
+		return toReturn;
 	}
 }

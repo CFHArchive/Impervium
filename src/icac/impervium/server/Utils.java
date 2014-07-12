@@ -34,12 +34,4 @@ public class Utils {
 		buffer.close();
 		return toReturn;
 	}
-	
-	public static byte[] getPrimitiveArray(Byte[] value) {
-		byte[] bytes = new byte[value.length];
-		for(int i = 0; i < value.length; i++) {
-			bytes[i] = value[i];
-		}
-		return bytes;
-	}
 }
