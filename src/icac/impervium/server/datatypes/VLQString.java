@@ -79,4 +79,9 @@ public class VLQString implements DataType {
 	{
 		return offset;
 	}
+	
+	public byte[] getUnusedBytes() {
+	     //TODO: Return unused bytes.
+	     return new byte[1];
+	}
 }

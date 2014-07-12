@@ -1,13 +1,15 @@
 package icac.impervium.server.networking.client;
 
+import icac.impervium.server.datatypes.UInt8;
+import icac.impervium.server.networking.IPacket;
+import icac.impervium.server.networking.PacketPayload;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
-import icac.impervium.server.datatypes.UInt8;
-import icac.impervium.server.networking.Packet;
+public class PacketClientConnect implements IPacket {
 
-public class PacketClientConnect extends Packet {
-
+	PacketPayload payload = new PacketPayload();
 	private int[] digest;
 	//TODO: Variant DataType.
 	private boolean uuidFlag;

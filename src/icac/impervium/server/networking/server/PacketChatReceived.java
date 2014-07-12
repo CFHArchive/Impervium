@@ -3,13 +3,16 @@ package icac.impervium.server.networking.server;
 import icac.impervium.server.datatypes.UInt32;
 import icac.impervium.server.datatypes.UInt8;
 import icac.impervium.server.datatypes.VLQString;
-import icac.impervium.server.networking.Packet;
+import icac.impervium.server.datatypes.sVLQ;
+import icac.impervium.server.networking.IPacket;
+import icac.impervium.server.networking.PacketPayload;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
-public class PacketChatReceived extends Packet {
+public class PacketChatReceived implements IPacket {
 
+	PacketPayload payload = new PacketPayload();
 	private UInt8 channel;
 	private String world;
 	private UInt32 clientID;
@@ -22,6 +25,11 @@ public class PacketChatReceived extends Packet {
 		this.clientID = new UInt32(id);
 		this.sender = sender;
 		this.message = message;
+		this.payload.add(this.channel.getBytes());
+		this.payload.add(this.world);
+		this.payload.add(this.clientID);
+		this.payload.add(this.sender);
+		this.payload.add(this.message);
 	}
 
 	@Override
@@ -31,6 +39,8 @@ public class PacketChatReceived extends Packet {
 
 	@Override
 	public void write(DataOutputStream dos) throws Exception {
+		dos.write(this.getID().getBytes());
+		dos.write(new sVLQ(this.payload.getBytes().length).getBytes());
 		dos.write(this.channel.getBytes());
 		dos.write(new VLQString(this.world).getBytes());
 		dos.write(this.clientID.getBytes());

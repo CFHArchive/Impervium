@@ -5,14 +5,17 @@ import icac.impervium.server.datatypes.UInt64;
 import icac.impervium.server.datatypes.UInt8;
 import icac.impervium.server.datatypes.VLQ;
 import icac.impervium.server.datatypes.VLQString;
+import icac.impervium.server.datatypes.sVLQ;
 import icac.impervium.server.datatypes.exception.VLQNegativeException;
-import icac.impervium.server.networking.Packet;
+import icac.impervium.server.networking.IPacket;
+import icac.impervium.server.networking.PacketPayload;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
-public class PacketConnectionResponse extends Packet {
+public class PacketConnectionResponse implements IPacket {
 
+	PacketPayload payload = new PacketPayload();
 	private Bool success;
 	private VLQ clientID;
 	private String rejectionReason;
@@ -38,6 +41,7 @@ public class PacketConnectionResponse extends Packet {
 			e.printStackTrace();
 		}
 		this.celestialInfo = new Bool(celestrialInfo);
+		//TODO: put stuff into the payload
 	}
 	
 	@Override
@@ -47,6 +51,8 @@ public class PacketConnectionResponse extends Packet {
 
 	@Override
 	public void write(DataOutputStream dos) throws Exception {
+		dos.write(this.getID().getBytes());
+		dos.write(new sVLQ(this.payload.getBytes().length).getBytes());
 		dos.write(this.success.getBytes());
 		dos.write(this.clientID.getBytes());
 		dos.write(new VLQString(this.rejectionReason).getBytes());

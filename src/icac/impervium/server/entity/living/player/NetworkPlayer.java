@@ -1,5 +1,9 @@
 package icac.impervium.server.entity.living.player;
 
+import icac.impervium.server.Server;
+import icac.impervium.server.logger.LogType;
+import icac.impervium.server.networking.server.PacketProtocolVersion;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -21,15 +25,17 @@ public class NetworkPlayer {
 			this.dos = new DataOutputStream(socket.getOutputStream());
 			this.dis = new DataInputStream(socket.getInputStream());
 			this.ip = socket.getRemoteSocketAddress().toString().split(":")[0];
-			System.out.println("Connection made from " + this.ip + "!");
+			Server.logger.Log("Connection made from " + this.ip + "!", LogType.Debug);
 			p = new Player(this);
+			PacketProtocolVersion ppv = new PacketProtocolVersion(Server.version);
+			ppv.write(dos);
 			new Thread() {
 				public void run() {
 					listen();
 				}
 			}.start();
 		} catch(Exception e) {
-			System.out.println(e.getStackTrace());
+			Server.logger.Log(e);
 		}
 	}
 		
@@ -37,10 +43,13 @@ public class NetworkPlayer {
 		while(!isDisconnected) {
 			try {
 				if(dis.available() != 0) {
-					//TODO: Read packets.
+					byte id = dis.readByte();
+					Server.logger.Log("Packet received. id: " + id, LogType.Debug);
+					
 				}
 			} catch (IOException e) {
-				System.out.println(e.getStackTrace());
+				Server.logger.Log(e.getCause());
+				Server.logger.Log(e);
 			}
 		}
 	}
