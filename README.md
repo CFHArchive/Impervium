@@ -6,7 +6,7 @@ Impervium is a completely custom server software for Starbound.
 ###Contribute
 Impervium is open source to give anyone who has knowledge of the Java programming language a chance to help improve it. However, there are some guidelines for contributing, but have no fear, because they're simple guidelines.
 
-**#####Guidelines:**
+#####Guidelines:
 * Do **NOT** leave whitespace characters at the end of files.
 * Do **NOT** push any code that does not work.
 * Do **NOT** push any unused code.
