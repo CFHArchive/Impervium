@@ -16,3 +16,6 @@ hs_err_pid*
 
 # Bin is unneeded #
 bin/
+
+# No need to commit logs #
+Logs/
