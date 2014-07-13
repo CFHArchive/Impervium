@@ -2,13 +2,11 @@ package icac.impervium.server.networking.server;
 
 import icac.impervium.server.Utils;
 import icac.impervium.server.datatypes.UInt8;
-import icac.impervium.server.datatypes.VLQString;
-import icac.impervium.server.datatypes.sVLQ;
 import icac.impervium.server.networking.IPacket;
 import icac.impervium.server.networking.PacketPayload;
+import icac.impervium.server.networking.StarboundOutputStream;
 
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 
 public class PacketHandshakeChallenge implements IPacket {
 
@@ -32,12 +30,12 @@ public class PacketHandshakeChallenge implements IPacket {
 	}
 
 	@Override
-	public void write(DataOutputStream dos) throws Exception {
-		dos.write(this.getID().getBytes());
-		dos.write(new sVLQ(this.payload.getBytes().length).getBytes());
-		dos.write(new VLQString(this.claim).getBytes());
-		dos.write(new VLQString(this.salt).getBytes());
-		dos.writeInt(this.rounds);
+	public void write(StarboundOutputStream sos) throws Exception {
+		sos.writeUInt8(this.getID());
+		sos.writePayload(this.payload);
+		sos.writeVLQString(this.claim);
+		sos.writeVLQString(this.salt);
+		sos.writeInt(this.rounds);
 	}
 
 	@Override

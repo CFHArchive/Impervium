@@ -1,26 +1,28 @@
 package icac.impervium.server.networking.client;
 
+import icac.impervium.server.datatypes.Bool;
 import icac.impervium.server.datatypes.UInt8;
+import icac.impervium.server.datatypes.Variant;
 import icac.impervium.server.networking.IPacket;
 import icac.impervium.server.networking.PacketPayload;
+import icac.impervium.server.networking.StarboundOutputStream;
 
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 
 public class PacketClientConnect implements IPacket {
 
 	PacketPayload payload = new PacketPayload();
-	private int[] digest;
-	//TODO: Variant DataType.
-	private boolean uuidFlag;
-	private int[] uuid;
+	private UInt8[] digest;
+	private Variant claim;
+	private Bool uuidFlag;
+	private UInt8[] uuid;
 	private String username;
 	private String species;
-	private int[] shipworld;
+	private UInt8[] shipworld;
 	private String accountName;
 	
 	public PacketClientConnect() {
-		uuid = new int[16];
+		uuid = new UInt8[16];
 	}
 	
 	@Override
@@ -29,7 +31,7 @@ public class PacketClientConnect implements IPacket {
 	}
 
 	@Override
-	public void write(DataOutputStream dos) throws Exception {
+	public void write(StarboundOutputStream sos) throws Exception {
 		//Client->Server Packet
 	}
 

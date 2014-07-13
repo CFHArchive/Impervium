@@ -1,5 +1,6 @@
 package icac.impervium.server.networking;
 
+import icac.impervium.server.Server;
 import icac.impervium.server.datatypes.Bool;
 import icac.impervium.server.datatypes.Dubble;
 import icac.impervium.server.datatypes.UInt16;
@@ -10,7 +11,9 @@ import icac.impervium.server.datatypes.VLQ;
 import icac.impervium.server.datatypes.VLQString;
 import icac.impervium.server.datatypes.Variant;
 import icac.impervium.server.datatypes.sVLQ;
+import icac.impervium.server.datatypes.exception.VLQNegativeException;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +51,13 @@ public class PacketPayload {
 	}
 	
 	public void add(String toAdd) {
-		add(toAdd.getBytes());
+		try {
+			add(new VLQString(toAdd));
+		} catch (VLQNegativeException e) {
+			Server.logger.Log(e);
+		} catch (UnsupportedEncodingException e) {
+			Server.logger.Log(e);
+		}
 	}
 	
 	public void add(Bool toAdd) {
@@ -65,6 +74,12 @@ public class PacketPayload {
 	
 	public void add(UInt8 toAdd) {
 		add(toAdd.getBytes());
+	}
+	
+	public void add(UInt8[] toAdd) {
+		for(UInt8 value : toAdd) {
+			add(value.getBytes());
+		}
 	}
 	
 	public void add(UInt16 toAdd) {
@@ -97,5 +112,12 @@ public class PacketPayload {
 			toReturn[i] = this.payload.get(i);
 		}
 		return toReturn;
+	}
+	
+	public void setBytes(byte[] bytes) {
+		payload.clear();
+		for(byte value : bytes) {
+			payload.add(value);
+		}
 	}
 }

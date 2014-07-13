@@ -3,9 +3,9 @@ package icac.impervium.server.networking.client;
 import icac.impervium.server.datatypes.UInt8;
 import icac.impervium.server.networking.IPacket;
 import icac.impervium.server.networking.PacketPayload;
+import icac.impervium.server.networking.StarboundOutputStream;
 
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 
 public class PacketHandshakeResponse implements IPacket {
 
@@ -19,7 +19,7 @@ public class PacketHandshakeResponse implements IPacket {
 	}
 
 	@Override
-	public void write(DataOutputStream dos) throws Exception {
+	public void write(StarboundOutputStream sos) throws Exception {
 		//Client->Server Packet
 	}
 

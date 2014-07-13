@@ -2,17 +2,16 @@ package icac.impervium.server.networking.server;
 
 import icac.impervium.server.Server;
 import icac.impervium.server.datatypes.UInt8;
-import icac.impervium.server.datatypes.sVLQ;
 import icac.impervium.server.logger.LogType;
 import icac.impervium.server.networking.IPacket;
 import icac.impervium.server.networking.PacketPayload;
+import icac.impervium.server.networking.StarboundOutputStream;
 
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 
 public class PacketProtocolVersion implements IPacket {
 
-	PacketPayload payload = new PacketPayload();
+	public PacketPayload payload = new PacketPayload();
 	private int protocolVersion;
 	
 	public PacketProtocolVersion(int protocolVersion) {
@@ -27,11 +26,12 @@ public class PacketProtocolVersion implements IPacket {
 	}
 
 	@Override
-	public void write(DataOutputStream dos) throws Exception {
+	public void write(StarboundOutputStream sos) throws Exception {
 		Server.logger.Log("Sending protocol version. Version: " + this.protocolVersion, LogType.Debug);
-		dos.write(this.getID().getBytes());
-		dos.write(new sVLQ(this.payload.getBytes().length).getBytes());
-		dos.writeInt(this.protocolVersion);
+		sos.writeUInt8(this.getID());
+		sos.writePayload(this.payload);
+		sos.writeInt(this.protocolVersion);
+		sos.flush();
 	}
 
 	@Override

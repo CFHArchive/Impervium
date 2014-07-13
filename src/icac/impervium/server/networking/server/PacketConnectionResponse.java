@@ -9,9 +9,9 @@ import icac.impervium.server.datatypes.sVLQ;
 import icac.impervium.server.datatypes.exception.VLQNegativeException;
 import icac.impervium.server.networking.IPacket;
 import icac.impervium.server.networking.PacketPayload;
+import icac.impervium.server.networking.StarboundOutputStream;
 
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 
 public class PacketConnectionResponse implements IPacket {
 
@@ -50,25 +50,10 @@ public class PacketConnectionResponse implements IPacket {
 	}
 
 	@Override
-	public void write(DataOutputStream dos) throws Exception {
-		dos.write(this.getID().getBytes());
-		dos.write(new sVLQ(this.payload.getBytes().length).getBytes());
-		dos.write(this.success.getBytes());
-		dos.write(this.clientID.getBytes());
-		dos.write(new VLQString(this.rejectionReason).getBytes());
-		dos.write(this.celestialInfo.getBytes());
-		dos.writeInt(this.orbitalLevels);
-		dos.writeInt(this.chunkSize);
-		dos.writeInt(this.xyMin);
-		dos.writeInt(this.xyMax);
-		dos.writeInt(this.zMin);
-		dos.writeInt(this.zMax);
-		dos.write(this.sectorsNumber.getBytes());
-		dos.write(new VLQString(this.sectorID).getBytes());
-		dos.write(new VLQString(this.sectorName).getBytes());
-		dos.write(this.sectorSeed.getBytes());
-		dos.write(new VLQString(this.sectorPrefix).getBytes());
-		//TODO: write variants
+	public void write(StarboundOutputStream sos) throws Exception {
+		sos.writeUInt8(this.getID());
+		sos.writePayload(this.payload);
+		//TODO: write this packet
 	}
 
 	@Override

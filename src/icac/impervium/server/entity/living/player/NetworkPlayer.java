@@ -2,17 +2,17 @@ package icac.impervium.server.entity.living.player;
 
 import icac.impervium.server.Server;
 import icac.impervium.server.logger.LogType;
+import icac.impervium.server.networking.StarboundOutputStream;
 import icac.impervium.server.networking.server.PacketProtocolVersion;
 
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
 public class NetworkPlayer {
 	
 	private Socket socket;
-	private DataOutputStream dos;
+	private StarboundOutputStream sos;
 	private DataInputStream dis;
 	
 	private String ip;
@@ -22,13 +22,13 @@ public class NetworkPlayer {
 	public NetworkPlayer(Socket socket) {
 		try {
 			this.socket = socket;
-			this.dos = new DataOutputStream(socket.getOutputStream());
+			this.sos = new StarboundOutputStream(socket.getOutputStream());
 			this.dis = new DataInputStream(socket.getInputStream());
 			this.ip = socket.getRemoteSocketAddress().toString().split(":")[0];
 			Server.logger.Log("Connection made from " + this.ip + "!", LogType.Debug);
 			p = new Player(this);
 			PacketProtocolVersion ppv = new PacketProtocolVersion(Server.version);
-			ppv.write(dos);
+			ppv.write(sos);
 			new Thread() {
 				public void run() {
 					listen();
@@ -58,8 +58,8 @@ public class NetworkPlayer {
 		return socket;
 	}
 
-	public DataOutputStream getDos() {
-		return dos;
+	public StarboundOutputStream getDos() {
+		return sos;
 	}
 
 	public DataInputStream getDis() {

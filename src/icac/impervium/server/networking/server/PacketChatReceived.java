@@ -2,13 +2,11 @@ package icac.impervium.server.networking.server;
 
 import icac.impervium.server.datatypes.UInt32;
 import icac.impervium.server.datatypes.UInt8;
-import icac.impervium.server.datatypes.VLQString;
-import icac.impervium.server.datatypes.sVLQ;
 import icac.impervium.server.networking.IPacket;
 import icac.impervium.server.networking.PacketPayload;
+import icac.impervium.server.networking.StarboundOutputStream;
 
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 
 public class PacketChatReceived implements IPacket {
 
@@ -38,14 +36,14 @@ public class PacketChatReceived implements IPacket {
 	}
 
 	@Override
-	public void write(DataOutputStream dos) throws Exception {
-		dos.write(this.getID().getBytes());
-		dos.write(new sVLQ(this.payload.getBytes().length).getBytes());
-		dos.write(this.channel.getBytes());
-		dos.write(new VLQString(this.world).getBytes());
-		dos.write(this.clientID.getBytes());
-		dos.write(new VLQString(this.sender).getBytes());
-		dos.write(new VLQString(this.message).getBytes());
+	public void write(StarboundOutputStream sos) throws Exception {
+		sos.writeUInt8(this.getID());
+		sos.writePayload(this.payload);
+		sos.writeUInt8(this.channel);
+		sos.writeVLQString(this.world);
+		sos.writeUInt32(this.clientID);
+		sos.writeVLQString(this.sender);
+		sos.writeVLQString(this.message);
 	}
 
 	@Override
