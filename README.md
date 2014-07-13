@@ -20,3 +20,7 @@ Impervium is open source to give anyone who has knowledge of the Java programmin
 
 ###Compiling
 Official Impervium Builds are compiled to run with Java 6. The reason for this is to allow people who do not stay up-to-date with the latest Java versions to run Impervium without needing to download anything prior to running it.
+
+###License
+Impervium is licensed uner the GNU GENERAL PUBLIC LICENSE Version 3.
+More details available in LICENSE file.
