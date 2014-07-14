@@ -4,14 +4,11 @@ import icac.impervium.server.datatypes.Bool;
 import icac.impervium.server.datatypes.UInt64;
 import icac.impervium.server.datatypes.UInt8;
 import icac.impervium.server.datatypes.VLQ;
-import icac.impervium.server.datatypes.VLQString;
-import icac.impervium.server.datatypes.sVLQ;
 import icac.impervium.server.datatypes.exception.VLQNegativeException;
 import icac.impervium.server.networking.IPacket;
 import icac.impervium.server.networking.PacketPayload;
+import icac.impervium.server.networking.StarboundInputStream;
 import icac.impervium.server.networking.StarboundOutputStream;
-
-import java.io.DataInputStream;
 
 public class PacketConnectionResponse implements IPacket {
 
@@ -57,7 +54,7 @@ public class PacketConnectionResponse implements IPacket {
 	}
 
 	@Override
-	public void read(DataInputStream dis) throws Exception {
+	public void read(StarboundInputStream sis) throws Exception {
 		//Server->Client Packet
 	}
 

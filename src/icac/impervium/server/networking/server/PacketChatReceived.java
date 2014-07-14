@@ -4,9 +4,8 @@ import icac.impervium.server.datatypes.UInt32;
 import icac.impervium.server.datatypes.UInt8;
 import icac.impervium.server.networking.IPacket;
 import icac.impervium.server.networking.PacketPayload;
+import icac.impervium.server.networking.StarboundInputStream;
 import icac.impervium.server.networking.StarboundOutputStream;
-
-import java.io.DataInputStream;
 
 public class PacketChatReceived implements IPacket {
 
@@ -44,10 +43,11 @@ public class PacketChatReceived implements IPacket {
 		sos.writeUInt32(this.clientID);
 		sos.writeVLQString(this.sender);
 		sos.writeVLQString(this.message);
+		sos.flush();
 	}
 
 	@Override
-	public void read(DataInputStream dis) throws Exception {
+	public void read(StarboundInputStream sis) throws Exception {
 		//Server->Client
 	}
 

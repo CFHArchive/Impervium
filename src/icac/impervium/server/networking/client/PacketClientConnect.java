@@ -5,9 +5,8 @@ import icac.impervium.server.datatypes.UInt8;
 import icac.impervium.server.datatypes.Variant;
 import icac.impervium.server.networking.IPacket;
 import icac.impervium.server.networking.PacketPayload;
+import icac.impervium.server.networking.StarboundInputStream;
 import icac.impervium.server.networking.StarboundOutputStream;
-
-import java.io.DataInputStream;
 
 public class PacketClientConnect implements IPacket {
 
@@ -36,7 +35,7 @@ public class PacketClientConnect implements IPacket {
 	}
 
 	@Override
-	public void read(DataInputStream dis) throws Exception {
+	public void read(StarboundInputStream sis) throws Exception {
 		//TODO: Read this packet.
 	}
 

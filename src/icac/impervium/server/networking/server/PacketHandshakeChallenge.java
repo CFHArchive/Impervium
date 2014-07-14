@@ -4,9 +4,8 @@ import icac.impervium.server.Utils;
 import icac.impervium.server.datatypes.UInt8;
 import icac.impervium.server.networking.IPacket;
 import icac.impervium.server.networking.PacketPayload;
+import icac.impervium.server.networking.StarboundInputStream;
 import icac.impervium.server.networking.StarboundOutputStream;
-
-import java.io.DataInputStream;
 
 public class PacketHandshakeChallenge implements IPacket {
 
@@ -36,10 +35,11 @@ public class PacketHandshakeChallenge implements IPacket {
 		sos.writeVLQString(this.claim);
 		sos.writeVLQString(this.salt);
 		sos.writeInt(this.rounds);
+		sos.flush();
 	}
 
 	@Override
-	public void read(DataInputStream dis) throws Exception {
+	public void read(StarboundInputStream sis) throws Exception {
 		//Server->Client Packet
 	}
 }

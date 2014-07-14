@@ -4,9 +4,8 @@ import icac.impervium.server.datatypes.UInt8;
 import icac.impervium.server.datatypes.sVLQ;
 import icac.impervium.server.networking.IPacket;
 import icac.impervium.server.networking.PacketPayload;
+import icac.impervium.server.networking.StarboundInputStream;
 import icac.impervium.server.networking.StarboundOutputStream;
-
-import java.io.DataInputStream;
 
 public class PacketUniverseTimeUpdate implements IPacket {
 
@@ -32,7 +31,7 @@ public class PacketUniverseTimeUpdate implements IPacket {
 	}
 
 	@Override
-	public void read(DataInputStream dis) throws Exception {
+	public void read(StarboundInputStream sis) throws Exception {
 		//Server->Client Packet.
 	}
 
