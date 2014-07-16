@@ -22,7 +22,7 @@ public class Server {
 	
 	public void start() {
 		alive = true;
-		
+		System.out.println("Testing the print stream....");
 		logger.Log("Starting Impervium Server ");
 		
 		try {
